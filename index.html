@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowt — PIX sem fricção</title>
+<meta name="description" content="API de orquestração PIX que transforma o checkout em 3 passos. Deep link automático + auto-copy. Conversão de até 90%.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #080808;
+  --bg2: #0f0f0f;
+  --surface: #141414;
+  --surface2: #1a1a1a;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f2f2f2;
+  --muted: #666;
+  --muted2: #999;
+  --accent: #00C47A;
+  --accent2: #00a865;
+  --accent-glow: rgba(0,196,122,0.15);
+  --accent-faint: rgba(0,196,122,0.06);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 40px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,8,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid var(--border);
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-mark {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800; font-size: 13px; color: #000;
+}
+.nav-logo-name { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 16px; color: var(--text); letter-spacing: -0.02em; }
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a { font-size: 13px; color: var(--muted2); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text); }
+.nav-cta {
+  background: var(--accent); color: #000;
+  font-size: 13px; font-weight: 600;
+  padding: 9px 20px; border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+}
+.nav-cta:hover { background: var(--accent2); }
+.nav-cta:active { transform: scale(0.98); }
+@media (max-width: 640px) { .nav-links { display: none; } nav { padding: 0 20px; } }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 100px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  top: 20%; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0,196,122,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 100%);
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--accent-faint);
+  border: 0.5px solid rgba(0,196,122,0.25);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 12px; color: var(--accent);
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+.hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+.hero h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  max-width: 800px;
+  margin-bottom: 20px;
+}
+.hero h1 .accent { color: var(--accent); }
+.hero h1 .dim { color: rgba(255,255,255,0.35); }
+
+.hero-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  color: var(--muted2);
+  max-width: 500px;
+  margin-bottom: 40px;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
+.btn-primary {
+  background: var(--accent); color: #000;
+  font-size: 14px; font-weight: 600;
+  padding: 13px 28px; border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+.btn-secondary {
+  background: transparent; color: var(--muted2);
+  font-size: 14px; font-weight: 500;
+  padding: 13px 28px; border-radius: 10px;
+  text-decoration: none;
+  border: 0.5px solid var(--border2);
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-secondary:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+
+.hero-stats {
+  display: flex; gap: 48px; flex-wrap: wrap; justify-content: center;
+}
+.stat { text-align: center; }
+.stat-val {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 32px; font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.stat-val span { color: var(--accent); }
+.stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* ── SECTION BASE ── */
+section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
+.section-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 16px;
+}
+.section-tag::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+.section-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800; letter-spacing: -0.02em;
+  color: var(--text); line-height: 1.1;
+  margin-bottom: 16px;
+}
+.section-sub { font-size: 16px; color: var(--muted2); max-width: 520px; line-height: 1.7; }
+
+/* ── PROBLEMA ── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 56px;
+}
+.step-card {
+  background: var(--surface);
+  padding: 28px 24px;
+  transition: background 0.2s;
+}
+.step-card:hover { background: var(--surface2); }
+.step-num {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px; font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.step-icon { font-size: 22px; margin-bottom: 10px; }
+.step-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.step-time {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: #ff4444; letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.step-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ── SOLUÇÃO ── */
+.solution-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 56px;
+}
+.sol-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  transition: border-color 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.sol-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.sol-card:hover { border-color: rgba(0,196,122,0.2); transform: translateY(-2px); }
+.sol-card:hover::before { opacity: 1; }
+.sol-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: var(--accent-faint);
+  border: 0.5px solid rgba(0,196,122,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 16px;
+}
+.sol-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.sol-desc { font-size: 13px; color: var(--muted2); line-height: 1.6; }
+
+/* ── BENCHMARK ── */
+.bench-wrap {
+  margin-top: 56px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+}
+.bench-item { text-align: center; }
+.bench-label { font-size: 12px; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+.bench-bar-wrap { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-bottom: 10px; overflow: hidden; }
+.bench-bar { height: 100%; border-radius: 4px; }
+.bench-time {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 28px; font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* ── DEMO SECTION ── */
+#demo { padding: 80px 24px; }
+.demo-section-wrap { max-width: 1100px; margin: 0 auto; }
+.demo-container {
+  margin-top: 48px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.demo-topbar {
+  background: var(--surface2);
+  padding: 14px 20px;
+  border-bottom: 0.5px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.demo-dot { width: 10px; height: 10px; border-radius: 50%; }
+.demo-url {
+  flex: 1; margin-left: 8px;
+  background: var(--bg2); border-radius: 6px;
+  padding: 5px 12px; font-size: 12px;
+  color: var(--muted); font-family: 'DM Sans', monospace;
+  border: 0.5px solid var(--border);
+}
+.demo-badge {
+  font-size: 11px; color: var(--accent);
+  background: var(--accent-faint);
+  border: 0.5px solid rgba(0,196,122,0.2);
+  border-radius: 20px; padding: 3px 10px;
+}
+.demo-iframe-wrap {
+  display: flex; justify-content: center; align-items: center;
+  padding: 40px 24px;
+  background: var(--bg);
+  min-height: 400px;
+}
+
+/* INLINE DEMO */
+.inline-demo { width: 100%; max-width: 700px; }
+.demo-inner {
+  display: flex; gap: 28px; align-items: flex-start;
+  flex-wrap: wrap; justify-content: center;
+}
+.phone-shell-lp {
+  width: 260px; flex-shrink: 0;
+  background: #1a1a1a;
+  border-radius: 34px;
+  border: 2px solid #2a2a2a;
+  overflow: hidden;
+  box-shadow: 0 0 0 5px #111, 0 20px 60px rgba(0,0,0,0.5);
+}
+.phone-top-lp {
+  height: 28px; background: #111;
+  display: flex; align-items: center; justify-content: center;
+}
+.phone-pill { width: 56px; height: 9px; border-radius: 9px; background: #222; }
+.phone-screen-lp { position: relative; overflow: hidden; min-height: 520px; background: #111; }
+.lp-step {
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: 14px; min-height: 520px;
+  opacity: 0; pointer-events: none;
+  transform: translateX(18px);
+  transition: opacity 0.28s, transform 0.28s;
+}
+.lp-step.active { opacity: 1; pointer-events: auto; transform: translateX(0); }
+.lp-step.exit { opacity: 0; transform: translateX(-18px); }
+
+/* reuse demo styles */
+.lp-store-header { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 0.5px solid rgba(255,255,255,0.06); }
+.lp-store-logo { width: 22px; height: 22px; border-radius: 5px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #000; }
+.lp-store-name { font-size: 11px; font-weight: 500; color: #fff; }
+.lp-store-sec { font-size: 9px; color: #555; }
+.lp-product { display: flex; gap: 8px; background: #1c1c1c; border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+.lp-product-img { width: 44px; height: 44px; border-radius: 7px; background: rgba(0,196,122,0.12); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.lp-product-name { font-size: 11px; font-weight: 500; color: #fff; margin-bottom: 1px; }
+.lp-product-detail { font-size: 9px; color: #555; margin-bottom: 3px; }
+.lp-product-price { font-size: 13px; font-weight: 700; color: #fff; }
+.lp-summary { border: 0.5px solid rgba(255,255,255,0.07); border-radius: 7px; padding: 8px 10px; margin-bottom: 10px; }
+.lp-row { display: flex; justify-content: space-between; font-size: 10px; color: #555; padding: 1px 0; }
+.lp-row.total { font-size: 12px; font-weight: 500; color: #fff; border-top: 0.5px solid rgba(255,255,255,0.07); margin-top: 4px; padding-top: 6px; }
+.lp-pay-label { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; color: #444; margin-bottom: 5px; text-transform: uppercase; }
+.lp-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(0,196,122,0.08); border: 0.5px solid rgba(0,196,122,0.2); border-radius: 20px; padding: 2px 7px; font-size: 9px; color: var(--accent); margin-bottom: 7px; }
+.lp-badge-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+.lp-btn { width: 100%; padding: 10px; border-radius: 8px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 5px; transition: transform 0.1s; }
+.lp-btn:active { transform: scale(0.98); }
+.lp-btn-green { background: var(--accent); color: #000; }
+.lp-btn-ghost { background: #1c1c1c; color: #555; border: 0.5px solid rgba(255,255,255,0.08); font-size: 11px; }
+.lp-step-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+.lp-step-sub { font-size: 10px; color: #555; margin-bottom: 12px; }
+.lp-bank-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 6px; }
+.lp-bank-btn { padding: 8px 7px; border-radius: 8px; border: 0.5px solid rgba(255,255,255,0.1); background: #1c1c1c; cursor: pointer; font-size: 10px; font-weight: 500; color: #fff; display: flex; align-items: center; gap: 5px; transition: all 0.15s; }
+.lp-bank-btn:hover, .lp-bank-btn.sel { border-color: var(--accent); background: rgba(0,196,122,0.08); }
+.lp-spinner { width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.08); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* NU screens mini */
+.nu-mini { background: #0d0618; min-height: 520px; }
+.nu-mini-bar { height: 24px; background: #8A05BE; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
+.nu-mini-time { font-size: 10px; font-weight: 600; color: white; }
+.nu-mini-back { font-size: 14px; color: white; background: none; border: none; cursor: pointer; padding: 0; }
+.nu-mini-title { font-size: 16px; font-weight: 700; color: white; line-height: 1.2; }
+.nu-mini-sub { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 3px; }
+.nu-mini-btn { width: 100%; padding: 12px; background: #8A05BE; border: none; border-radius: 24px; font-size: 12px; font-weight: 700; color: white; cursor: pointer; transition: transform 0.1s; }
+.nu-mini-btn:active { transform: scale(0.98); }
+.nu-mini-amount { font-size: 24px; font-weight: 800; color: white; margin: 4px 0 10px; }
+
+/* INFO SIDE */
+.demo-info-side { flex: 1; min-width: 200px; max-width: 280px; }
+.di-dots { display: flex; gap: 5px; margin-bottom: 14px; flex-wrap: wrap; }
+.di-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: background 0.3s; }
+.di-dot.on { background: var(--accent); }
+.di-card { background: #141414; border: 0.5px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+.di-card-title { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.di-card-body { font-size: 11px; color: #666; line-height: 1.6; }
+.di-log { font-family: monospace; font-size: 11px; color: #555; line-height: 2; }
+.di-log .ok { color: var(--accent); }
+.di-metrics { display: flex; gap: 6px; }
+.di-metric { flex: 1; background: #141414; border: 0.5px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px; text-align: center; }
+.di-metric-val { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 800; color: var(--accent); }
+.di-metric-label { font-size: 9px; color: #555; margin-top: 2px; }
+
+/* ── CONTATO ── */
+#contato { padding: 100px 24px; }
+.contact-wrap {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+}
+@media (max-width: 768px) { .contact-wrap { grid-template-columns: 1fr; gap: 40px; } }
+.contact-form {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  padding: 36px;
+}
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 12px; color: var(--muted2); margin-bottom: 6px; font-weight: 500; }
+.form-input {
+  width: 100%; background: var(--bg);
+  border: 0.5px solid var(--border2);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13px; color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-input:focus { border-color: rgba(0,196,122,0.4); }
+.form-input::placeholder { color: #333; }
+textarea.form-input { resize: none; min-height: 100px; }
+.form-submit {
+  width: 100%; padding: 13px;
+  background: var(--accent); color: #000;
+  font-size: 14px; font-weight: 700;
+  border: none; border-radius: 10px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 4px;
+}
+.form-submit:hover { background: var(--accent2); }
+.form-submit:active { transform: scale(0.98); }
+.form-success { display: none; text-align: center; padding: 20px; }
+.form-success-icon { font-size: 32px; margin-bottom: 10px; }
+.form-success-text { font-size: 14px; color: var(--accent); font-weight: 500; }
+
+.contact-info { padding-top: 8px; }
+.contact-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 800; letter-spacing: -0.02em;
+  color: var(--text); line-height: 1.15;
+  margin-bottom: 16px;
+}
+.contact-sub { font-size: 15px; color: var(--muted2); line-height: 1.7; margin-bottom: 32px; }
+.contact-items { display: flex; flex-direction: column; gap: 14px; }
+.contact-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+}
+.contact-item-icon { font-size: 18px; flex-shrink: 0; }
+.contact-item-label { font-size: 11px; color: var(--muted); margin-bottom: 1px; }
+.contact-item-val { font-size: 13px; color: var(--text); font-weight: 500; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 0.5px solid var(--border);
+  padding: 32px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo { display: flex; align-items: center; gap: 8px; }
+.footer-logo-mark { width: 24px; height: 24px; border-radius: 6px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: 'Syne'; font-weight: 800; font-size: 10px; color: #000; }
+.footer-logo-name { font-family: 'Syne'; font-weight: 700; font-size: 14px; color: var(--text); }
+.footer-copy { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.6; }
+.footer-right { font-size: 11px; color: #333; text-align: right; line-height: 1.6; }
+@media (max-width: 640px) { footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; } .footer-right { text-align: left; } }
+
+/* ── ANIMATIONS ── */
+.fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── FLOW COMPARATIVO ── */
+.flow-cmp { }
+.flow-cmp-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.flow-col { padding: 28px 24px; }
+.flow-col-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 0.5px solid rgba(255,255,255,0.06); }
+.flow-badge { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+.flow-badge-bad  { background: rgba(255,68,68,0.15); color: #ff8888; }
+.flow-badge-good { background: rgba(0,196,122,0.12); color: #00C47A; }
+.flow-col-title { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); }
+.flow-steps { display: flex; flex-direction: column; gap: 0; }
+.flow-step { display: flex; align-items: center; gap: 10px; padding: 5px 0; }
+.flow-line { height: 12px; width: 0.5px; background: rgba(255,255,255,0.07); margin-left: 11px; }
+.flow-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex-shrink: 0; }
+.fn-red   { background: rgba(255,68,68,0.15); color: #ff8888; }
+.fn-green { background: rgba(0,196,122,0.15); color: #00C47A; }
+.fn-gray  { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.3); }
+.fn-ghost { background: transparent; color: rgba(255,255,255,0.15); font-size: 12px; }
+.flow-text { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+.flow-muted { color: rgba(255,255,255,0.4) !important; font-size: 12px; }
+.flow-strike { text-decoration: line-through; color: rgba(255,255,255,0.2) !important; font-size: 12px; }
+.flow-eliminated { opacity: 0.6; }
+.flow-tag { display: inline-block; background: rgba(0,196,122,0.12); color: #00C47A; font-size: 10px; font-weight: 500; padding: 1px 7px; border-radius: 10px; margin-left: 4px; vertical-align: middle; white-space: nowrap; }
+.flow-result { margin-top: 18px; padding: 12px 16px; border-radius: 10px; font-size: 12px; line-height: 1.7; }
+.flow-result-bad  { background: rgba(255,68,68,0.06); border: 0.5px solid rgba(255,68,68,0.12); color: rgba(255,255,255,0.5); }
+.flow-result-good { background: rgba(0,196,122,0.06); border: 0.5px solid rgba(0,196,122,0.15); color: rgba(255,255,255,0.5); }
+.flow-vs { display: flex; align-items: center; justify-content: center; padding: 0 20px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.15); letter-spacing: 0.1em; border-left: 0.5px solid rgba(255,255,255,0.06); border-right: 0.5px solid rgba(255,255,255,0.06); }
+.flow-metrics { display: flex; gap: 1px; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.06); border-radius: 12px; overflow: hidden; margin-top: 12px; }
+.flow-metric { flex: 1; padding: 18px; text-align: center; background: rgba(255,255,255,0.02); }
+.flow-metric-val { font-size: 26px; font-weight: 700; color: #00C47A; letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px; }
+.flow-metric-label { font-size: 11px; color: rgba(255,255,255,0.35); }
+@media (max-width: 600px) {
+  .flow-cmp-grid { grid-template-columns: 1fr; }
+  .flow-vs { padding: 12px; border-left: none; border-right: none; border-top: 0.5px solid rgba(255,255,255,0.06); border-bottom: 0.5px solid rgba(255,255,255,0.06); }
+  .flow-metrics { flex-direction: column; gap: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">F</div>
+    <div class="nav-logo-name">Flowt</div>
+  </a>
+  <div class="nav-links">
+    <a href="#problema">Problema</a>
+    <a href="#solucao">Solução</a>
+    <a href="#demo">Demo</a>
+    <a href="#contato">Contato</a>
+  </div>
+  <a href="#contato" class="nav-cta">Falar com a equipe →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    API de orquestração PIX · Acesso antecipado
+  </div>
+  <h1>
+    O Pix que<br>
+    <span class="accent">converte.</span><br>
+    <span class="dim">Para qualquer banco.</span>
+  </h1>
+  <p class="hero-sub">
+    A Flowt elimina os passos manuais do checkout PIX — copiando o código e abrindo o app do banco automaticamente. Como o NuPay, mas para todos.
+  </p>
+  <div class="hero-actions">
+    <a href="#demo" class="btn-primary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Ver demo ao vivo
+    </a>
+    <a href="#contato" class="btn-secondary">
+      Falar com a equipe
+    </a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-val"><span>90%</span></div><div class="stat-label">taxa de conversão PIX com Flowt</div></div>
+    <div class="stat"><div class="stat-val"><span>+60%</span></div><div class="stat-label">do volume PIX desperdiçado hoje</div></div>
+    <div class="stat"><div class="stat-val"><span>2,4x</span></div><div class="stat-label">mais volume processado</div></div>
+  </div>
+  <div style="max-width:600px;margin:32px auto 0;background:rgba(0,196,122,0.06);border:0.5px solid rgba(0,196,122,0.2);border-radius:12px;padding:20px 28px;text-align:center;">
+    <p style="font-size:15px;color:#bbb;line-height:1.8;font-weight:300;">Cada transação PIX que converte gera receita para você. Com 38% de conversão hoje, mais de 60% do seu volume PIX está sendo desperdiçado. <strong style="color:#00C47A;font-weight:500;">A Flowt recupera esse volume.</strong></p>
+  </div>
+</div>
+
+<!-- PROBLEMA -->
+<section id="problema" class="fade-in">
+  <div class="section-tag">Problema crítico</div>
+  <h2 class="section-title">15 a 25 segundos de<br>fricção no momento certo.</h2>
+  <p class="section-sub">A jornada atual do PIX tem 5 passos manuais que acumulam atrito justamente no momento mais valioso — a finalização da compra.</p>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-icon">📋</div>
+      <div class="step-name">Copiar QR Code</div>
+      <div class="step-time">2–4s</div>
+      <div class="step-desc">Identificar botão, tocar, confirmar e aguardar feedback visual</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-icon">📱</div>
+      <div class="step-name">Abrir o app do banco</div>
+      <div class="step-time">3–6s</div>
+      <div class="step-desc">Troca de app, tempo de carregamento, confusão de navegação</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-icon">📌</div>
+      <div class="step-name">Colar o código Pix</div>
+      <div class="step-time">4–7s</div>
+      <div class="step-desc">Navegar até Pix, selecionar "Copia e Cola", executar a ação</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-icon">✅</div>
+      <div class="step-name">Confirmar pagamento</div>
+      <div class="step-time">3–5s</div>
+      <div class="step-desc">Revisar detalhes, confirmar com biometria ou senha</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">05</div>
+      <div class="step-icon">↩</div>
+      <div class="step-name">Voltar ao checkout</div>
+      <div class="step-time">2–4s</div>
+      <div class="step-desc">Trocar de app novamente, aguardar tela de confirmação</div>
+    </div>
+  </div>
+  <div class="bench-wrap fade-in">
+    <div class="bench-item">
+      <div class="bench-label">Apple Pay / NuPay</div>
+      <div class="bench-bar-wrap"><div class="bench-bar" style="width:20%;background:#00C47A;"></div></div>
+      <div class="bench-time" style="color:#00C47A;">3–5s</div>
+    </div>
+    <div class="bench-item">
+      <div class="bench-label">Flowt (meta)</div>
+      <div class="bench-bar-wrap"><div class="bench-bar" style="width:35%;background:#00C47A;opacity:0.6;"></div></div>
+      <div class="bench-time" style="color:#00C47A;opacity:0.7;">5–8s</div>
+    </div>
+    <div class="bench-item">
+      <div class="bench-label">PIX atual</div>
+      <div class="bench-bar-wrap"><div class="bench-bar" style="width:100%;background:#ff4444;"></div></div>
+      <div class="bench-time" style="color:#ff4444;">15–25s</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUÇÃO -->
+<section id="solucao" class="fade-in">
+  <div class="section-tag">A solução</div>
+  <h2 class="section-title">PIX orquestrado.<br>3 passos. 5 segundos.</h2>
+  <p class="section-sub">A API Flowt automatiza toda a orquestração — deep link inteligente, auto-copy e redirecionamento direto para a tela de PIX do banco escolhido.</p>
+  <div class="solution-grid">
+    <div class="sol-card">
+      <div class="sol-icon">⚡</div>
+      <div class="sol-title">Deep Link Inteligente</div>
+      <div class="sol-desc">Abre o app do banco direto na tela de PIX Copia e Cola, sem navegação manual. Suporte a Nubank, Itaú, Bradesco, BB, Inter, C6 e mais.</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon">📋</div>
+      <div class="sol-title">Auto-Copy automático</div>
+      <div class="sol-desc">O código PIX é copiado para o clipboard no momento exato do clique. O banco detecta e oferece colar automaticamente.</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon">🔁</div>
+      <div class="sol-title">Preferência de banco salva</div>
+      <div class="sol-desc">Na segunda compra, o fluxo é ainda mais rápido — o banco preferido do cliente já está selecionado.</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon">🔌</div>
+      <div class="sol-title">Integração simples</div>
+      <div class="sol-desc">API REST com uma única chamada POST. Funciona sobre qualquer PSP existente — sem trocar de gateway.</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon">📊</div>
+      <div class="sol-title">Métricas em tempo real</div>
+      <div class="sol-desc">Dashboard com taxa de conversão, tempo médio de checkout e abandono por etapa.</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon">🛡</div>
+      <div class="sol-title">Sem intermediar pagamentos</div>
+      <div class="sol-desc">A Flowt é camada de UX, não processadora. O dinheiro flui pelo seu PSP atual. Zero compliance extra.</div>
+    </div>
+
+  <!-- COMPARATIVO DE FLUXO -->
+  <div class="flow-cmp fade-in" style="margin-top:56px;">
+    <div class="flow-cmp-grid">
+
+      <!-- SEM FLOWT -->
+      <div class="flow-col">
+        <div class="flow-col-header">
+          <div class="flow-badge flow-badge-bad">Sem Flowt</div>
+          <div class="flow-col-title">8 passos</div>
+        </div>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="flow-num fn-red">1</div><span class="flow-text">Cliente decide pagar com PIX</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-red">2</div><span class="flow-text">Copia o código PIX manualmente</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-red">3</div><span class="flow-text">Sai da tela do marketplace</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-red">4</div><span class="flow-text">Busca o app do banco</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-red">5</div><span class="flow-text">Abre e navega até PIX</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-gray">6</div><span class="flow-text flow-muted">Cola o código</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-gray">7</div><span class="flow-text flow-muted">Confirma o pagamento</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-gray">8</div><span class="flow-text flow-muted">Volta ao marketplace</span></div>
+        </div>
+        <div class="flow-result flow-result-bad">
+          Tempo médio: <strong>15–25 segundos</strong><br>
+          Conversão: <strong style="color:#ff5555">~38%</strong>
+        </div>
+      </div>
+
+      <!-- DIVISOR -->
+      <div class="flow-vs">VS</div>
+
+      <!-- COM FLOWT -->
+      <div class="flow-col">
+        <div class="flow-col-header">
+          <div class="flow-badge flow-badge-good">Com Flowt</div>
+          <div class="flow-col-title">5 passos</div>
+        </div>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="flow-num fn-green">1</div><span class="flow-text">Cliente decide pagar com PIX</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step flow-eliminated"><div class="flow-num fn-ghost">—</div><span class="flow-text flow-strike">Copia o código PIX manualmente</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-green">2</div><span class="flow-text">Escolhe o banco <span class="flow-tag">auto-salvo</span></span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step flow-eliminated"><div class="flow-num fn-ghost">—</div><span class="flow-text flow-strike">Sai da tela do marketplace</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-green">3</div><span class="flow-text">App abre direto no PIX <span class="flow-tag">deep link</span></span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-gray">4</div><span class="flow-text flow-muted">Cola o código <span class="flow-tag">já copiado</span></span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step"><div class="flow-num fn-gray">5</div><span class="flow-text flow-muted">Confirma o pagamento</span></div>
+          <div class="flow-line"></div>
+          <div class="flow-step flow-eliminated"><div class="flow-num fn-ghost" style="opacity:0.2">—</div><span class="flow-text flow-muted" style="opacity:0.25">Volta ao marketplace</span></div>
+        </div>
+        <div class="flow-result flow-result-good">
+          Tempo médio: <strong>5–8 segundos</strong><br>
+          Conversão: <strong style="color:#00C47A">até 90%</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MÉTRICAS -->
+    <div class="flow-metrics">
+      <div class="flow-metric"><div class="flow-metric-val">3</div><div class="flow-metric-label">passos eliminados</div></div>
+      <div class="flow-metric"><div class="flow-metric-val">~70%</div><div class="flow-metric-label">menos tempo de compra</div></div>
+      <div class="flow-metric"><div class="flow-metric-val">2,4x</div><div class="flow-metric-label">mais volume processado</div></div>
+    </div>
+  </div>
+
+  </div>
+</section>
+
+<!-- DEMO -->
+<div id="demo">
+<div class="demo-section-wrap fade-in">
+  <div class="section-tag">Demo ao vivo</div>
+  <h2 class="section-title">Veja o fluxo completo.</h2>
+  <p class="section-sub">Checkout real chamando a API Flowt. Selecione o banco e acompanhe cada etapa — incluindo a simulação do app Nubank.</p>
+  <div class="demo-container">
+    <div class="demo-topbar">
+      <div class="demo-dot" style="background:#ff5f57"></div>
+      <div class="demo-dot" style="background:#febc2e"></div>
+      <div class="demo-dot" style="background:#28c840"></div>
+      <div class="demo-url">flowt.com.br/demo</div>
+      <div class="demo-badge">● Sandbox ao vivo</div>
+    </div>
+    <div class="demo-iframe-wrap">
+      <div class="inline-demo">
+        <div class="demo-inner">
+
+          <!-- PHONE -->
+          <div class="phone-shell-lp">
+            <div class="phone-top-lp"><div class="phone-pill"></div></div>
+            <div class="phone-screen-lp">
+
+              <!-- cart -->
+              <div class="lp-step active" id="lp-cart">
+                <div class="lp-store-header">
+                  <div class="lp-store-logo">F</div>
+                  <div><div class="lp-store-name">FlowStore</div><div class="lp-store-sec">checkout seguro</div></div>
+                </div>
+                <div class="lp-product">
+                  <div class="lp-product-img">👟</div>
+                  <div>
+                    <div class="lp-product-name">Tênis Runner Pro</div>
+                    <div class="lp-product-detail">Tam. 42 · Preto</div>
+                    <div class="lp-product-price">R$ 199,90</div>
+                  </div>
+                </div>
+                <div class="lp-summary">
+                  <div class="lp-row"><span>Subtotal</span><span>R$ 199,90</span></div>
+                  <div class="lp-row"><span>Frete</span><span>Grátis</span></div>
+                  <div class="lp-row total"><span>Total</span><span>R$ 199,90</span></div>
+                </div>
+                <div class="lp-pay-label">Pagamento</div>
+                <div class="lp-badge"><div class="lp-badge-dot"></div>Powered by Flowt</div>
+                <button class="lp-btn lp-btn-green" onclick="lpGo('bank')">⚡ Pagar com PIX via Flowt</button>
+                <button class="lp-btn lp-btn-ghost">Cartão de crédito</button>
+              </div>
+
+              <!-- bank -->
+              <div class="lp-step" id="lp-bank" style="background:#111;min-height:520px;">
+                <div class="lp-step-title">Escolha seu banco</div>
+                <div class="lp-step-sub">PIX será copiado e o app abrirá automaticamente</div>
+                <div class="lp-bank-grid">
+                  <button class="lp-bank-btn" onclick="lpSelectBank()" id="lp-bank-nu">💜 Nubank</button>
+                  <button class="lp-bank-btn" style="opacity:0.4;cursor:default">🟠 Itaú</button>
+                  <button class="lp-bank-btn" style="opacity:0.4;cursor:default">🔴 Bradesco</button>
+                  <button class="lp-bank-btn" style="opacity:0.4;cursor:default">🟡 Banco do Brasil</button>
+                  <button class="lp-bank-btn" style="opacity:0.4;cursor:default">🟠 Inter</button>
+                  <button class="lp-bank-btn" style="opacity:0.4;cursor:default">⚫ C6 Bank</button>
+                </div>
+                <div style="font-size:9px;color:#333;text-align:center;margin-top:8px;">Demo com Nubank · outros bancos em breve</div>
+              </div>
+
+              <!-- loading -->
+              <div class="lp-step" id="lp-loading" style="background:#111;min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+                <div class="lp-spinner"></div>
+                <div style="font-size:11px;color:#555;" id="lp-loading-text">Gerando seu PIX...</div>
+              </div>
+
+              <!-- nu home -->
+              <div class="lp-step" id="lp-nu-home">
+                <div class="nu-mini" style="min-height:520px;">
+                  <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span><span style="font-size:10px;color:white;">🔋72%</span></div>
+                  <div style="background:#8A05BE;padding:12px 14px 18px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                      <div style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:13px;">👤</div>
+                      <div style="display:flex;gap:12px;font-size:14px;color:rgba(255,255,255,0.6);">👁 ❓ ✉</div>
+                    </div>
+                    <div style="font-size:14px;font-weight:700;color:white;margin-bottom:10px;">Olá, Gabriela</div>
+                    <div style="background:white;border-radius:10px;padding:10px 12px;">
+                      <div style="display:flex;justify-content:space-between;font-size:10px;color:#666;"><span>Conta</span><span>›</span></div>
+                      <div style="font-size:18px;font-weight:800;color:#111;margin-top:2px;">R$ 1.356,98</div>
+                    </div>
+                  </div>
+                  <div style="background:#0d0618;padding:12px 14px;">
+                    <div style="display:flex;justify-content:space-around;margin-bottom:12px;">
+                      <div onclick="lpGo('nu-pix')" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;">
+                        <div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">✦</div>
+                        <span style="font-size:9px;color:#a080c0;">Pix</span>
+                      </div>
+                      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+                        <div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">💳</div>
+                        <span style="font-size:9px;color:#a080c0;">Pagar</span>
+                      </div>
+                      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+                        <div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">↔</div>
+                        <span style="font-size:9px;color:#a080c0;">Transferir</span>
+                      </div>
+                      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+                        <div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">⬇</div>
+                        <span style="font-size:9px;color:#a080c0;">Depositar</span>
+                      </div>
+                    </div>
+                    <div style="background:#1e0d30;border-radius:8px;padding:10px 12px;margin-bottom:12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+                      <span style="font-size:11px;color:#a080c0;">💳 Meus cartões</span><span style="color:rgba(255,255,255,0.2)">›</span>
+                    </div>
+                    <div style="border-top:0.5px solid rgba(255,255,255,0.04);padding-top:10px;">
+                      <div style="font-size:9px;color:#444;">Cartão de crédito · Fatura atual</div>
+                      <div style="font-size:14px;font-weight:800;color:white;margin:3px 0;">R$ 1.094,80</div>
+                      <div style="font-size:9px;color:#555;">Limite disponível: R$ 730,00</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- nu pix area -->
+              <div class="lp-step" id="lp-nu-pix">
+                <div class="nu-mini" style="min-height:520px;">
+                  <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span><span style="font-size:10px;color:white;">🔋</span></div>
+                  <div style="background:#0d0618;padding:12px 14px 16px;">
+                    <button class="nu-mini-back" onclick="lpGo('nu-home')">✕</button>
+                    <div class="nu-mini-title">Área Pix</div>
+                    <div class="nu-mini-sub">Envie e receba a qualquer hora, sem pagar nada.</div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px 14px;background:#0d0618;">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:44px;height:44px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:16px;">↗</div><span style="font-size:9px;color:#a080c0;text-align:center;">Transferir</span></div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:44px;height:44px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:16px;">📅</div><span style="font-size:9px;color:#a080c0;text-align:center;">Programar</span></div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:44px;height:44px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:16px;">⊞</div><span style="font-size:9px;color:#a080c0;text-align:center;">Ler QR code</span></div>
+                    <div onclick="lpGo('nu-cola')" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;"><div style="width:44px;height:44px;border-radius:50%;background:rgba(138,5,190,0.3);border:1.5px solid #8A05BE;display:flex;align-items:center;justify-content:center;font-size:16px;">⧉</div><span style="font-size:9px;color:white;text-align:center;font-weight:600;">Pix Copia e Cola</span></div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:44px;height:44px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:16px;">💲</div><span style="font-size:9px;color:#a080c0;text-align:center;">Cobrar</span></div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:44px;height:44px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:16px;">⬇</div><span style="font-size:9px;color:#a080c0;text-align:center;">Depositar</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- nu cola -->
+              <div class="lp-step" id="lp-nu-cola">
+                <div class="nu-mini" style="min-height:520px;">
+                  <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span></div>
+                  <div style="background:#0d0618;padding:12px 14px 16px;">
+                    <button class="nu-mini-back" onclick="lpGo('nu-pix')">✕</button>
+                    <div class="nu-mini-title" style="font-size:16px;">Insira o código do<br>Pix Copia e Cola</div>
+                  </div>
+                  <div style="background:#0d0618;padding:12px 14px;">
+                    <div style="font-size:10px;color:#a080c0;margin-bottom:6px;">Cole o código aqui</div>
+                    <div id="lp-paste-display" style="background:#1a0a2e;border:0.5px solid rgba(255,255,255,0.08);border-radius:6px;padding:10px 12px;font-size:9px;color:#a080c0;min-height:38px;word-break:break-all;line-height:1.4;">&nbsp;</div>
+                    <div style="background:#1a0a2e;border-radius:10px;padding:10px 12px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;border:0.5px solid rgba(138,5,190,0.25);">
+                      <span style="font-size:10px;color:#a080c0;">Um código Pix já foi copiado por você.</span>
+                      <button onclick="lpPaste()" style="font-size:11px;font-weight:700;color:#8A05BE;background:none;border:none;cursor:pointer;padding:0;margin-left:8px;white-space:nowrap;">Colar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- nu pagando -->
+              <div class="lp-step" id="lp-nu-pagando">
+                <div class="nu-mini" style="min-height:520px;">
+                  <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span></div>
+                  <div style="background:#0d0618;padding:12px 14px;">
+                    <button class="nu-mini-back" onclick="lpGo('nu-cola')">‹</button>
+                    <div style="font-size:11px;color:#a080c0;margin-bottom:2px;">Pagando</div>
+                    <div class="nu-mini-amount">R$ 199,90</div>
+                    <div style="font-size:11px;color:#a080c0;margin-bottom:12px;font-weight:500;">para FLOWSTORE LTDA</div>
+                    <div style="display:inline-block;background:#2a1040;border-radius:16px;padding:3px 10px;font-size:9px;color:#a080c0;margin-bottom:12px;">Documento Cob. de Débitos</div>
+                    <div style="border-top:0.5px solid rgba(255,255,255,0.05);padding-top:10px;">
+                      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.03);"><span style="font-size:10px;color:#a080c0;">CNPJ</span><span style="font-size:10px;color:white;">12.345.678/0001-90</span></div>
+                      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.03);"><span style="font-size:10px;color:#a080c0;">Instituição</span><span style="font-size:10px;color:white;">BCO FLOWT PAG.</span></div>
+                      <div style="display:flex;justify-content:space-between;padding:5px 0;"><span style="font-size:10px;color:#a080c0;">Chave Pix</span><span style="font-size:9px;color:white;text-align:right;max-width:55%;word-break:break-all;">33746404860</span></div>
+                    </div>
+                    <button onclick="lpGo('nu-review')" class="nu-mini-btn" style="margin-top:14px;">Escolher como pagar</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- nu review -->
+              <div class="lp-step" id="lp-nu-review">
+                <div class="nu-mini" style="min-height:520px;">
+                  <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span></div>
+                  <div style="background:#0d0618;padding:12px 14px;">
+                    <button class="nu-mini-back" onclick="lpGo('nu-pagando')">‹</button>
+                    <div class="nu-mini-title" style="font-size:15px;">Revise os detalhes<br>do seu pagamento</div>
+                    <div class="nu-mini-sub">para FLOWSTORE LTDA</div>
+                  </div>
+                  <div style="background:#0d0618;padding:0 14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);">
+                      <div><div style="font-size:10px;color:#a080c0;">Quando</div><div style="font-size:11px;font-weight:500;color:white;margin-top:1px;">Agora</div></div>
+                      <button style="font-size:9px;color:#8A05BE;background:#2a1040;border:none;border-radius:16px;padding:4px 10px;cursor:pointer;font-weight:600;">Alterar</button>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);">
+                      <div><div style="font-size:10px;color:#a080c0;">Forma de pagamento</div><div style="font-size:11px;font-weight:500;color:white;margin-top:1px;">Pix</div></div>
+                      <button style="font-size:9px;color:#8A05BE;background:#2a1040;border:none;border-radius:16px;padding:4px 10px;cursor:pointer;font-weight:600;">Alterar</button>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);">
+                      <div><div style="font-size:10px;color:#a080c0;">Pagando com</div><div style="font-size:11px;font-weight:500;color:white;margin-top:1px;">Saldo da conta</div></div>
+                      <button style="font-size:9px;color:#8A05BE;background:#2a1040;border:none;border-radius:16px;padding:4px 10px;cursor:pointer;font-weight:600;">Alterar</button>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 8px;">
+                      <span style="font-size:11px;color:#a080c0;">Total a pagar</span>
+                      <span style="font-size:16px;font-weight:800;color:white;">R$ 199,90</span>
+                    </div>
+                    <button onclick="lpGo('nu-success')" class="nu-mini-btn">Pagar</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- nu success -->
+              <div class="lp-step" id="lp-nu-success">
+                <div class="nu-mini" style="min-height:520px;display:flex;flex-direction:column;">
+                  <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span></div>
+                  <div style="background:#0d0618;padding:14px 14px;border-bottom:0.5px solid rgba(255,255,255,0.04);">
+                    <div style="visibility:hidden;font-size:14px;">✕</div>
+                  </div>
+                  <div style="background:#0d0618;padding:28px 18px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;flex:1;">
+                    <div style="font-size:42px;margin-bottom:10px;">🚀</div>
+                    <div style="font-size:18px;font-weight:800;color:white;margin-bottom:4px;">Pagamento<br>realizado!</div>
+                    <div style="font-size:10px;color:#a080c0;margin-bottom:20px;line-height:1.5;">Para mais detalhes veja o histórico<br>de transações da sua conta.</div>
+                    <div style="background:#1e0d30;border-radius:10px;padding:14px 16px;width:100%;margin-bottom:18px;">
+                      <div style="font-size:17px;font-weight:800;color:white;margin-bottom:3px;">R$ 199,90</div>
+                      <div style="font-size:10px;color:#a080c0;">para FLOWSTORE LTDA</div>
+                      <div style="font-size:9px;color:rgba(255,255,255,0.2);margin-top:4px;">Agora mesmo · 19:10</div>
+                    </div>
+                    <button onclick="lpGo('cs')" class="nu-mini-btn">🛍 Voltar ao Marketplace</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- checkout success -->
+              <div class="lp-step" id="lp-cs" style="background:#111;min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;gap:6px;">
+                <div style="width:52px;height:52px;border-radius:50%;background:rgba(0,196,122,0.12);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:6px;">✓</div>
+                <div style="font-size:15px;font-weight:600;color:#fff;">Pagamento confirmado!</div>
+                <div style="font-size:11px;color:#555;">Seu pedido foi aprovado</div>
+                <div style="background:#1c1c1c;border-radius:8px;padding:12px 14px;width:100%;margin-top:6px;border:0.5px solid rgba(255,255,255,0.06);">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0;"><span style="color:#555;">Produto</span><span style="color:#fff;font-weight:500;">Tênis Runner Pro</span></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0;"><span style="color:#555;">Valor</span><span style="color:#fff;font-weight:500;">R$ 199,90</span></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0;"><span style="color:#555;">PIX via</span><span style="color:#00C47A;font-weight:500;">Nubank</span></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0;"><span style="color:#555;">Status</span><span style="color:#00C47A;font-weight:500;">✓ Aprovado</span></div>
+                </div>
+                <div style="font-size:10px;color:#444;margin-top:8px;line-height:1.6;">De <strong style="color:#00C47A;">15–25s</strong> para <strong style="color:#00C47A;">menos de 8s</strong>.<br>De 6 passos para <strong style="color:#00C47A;">3 passos</strong>.</div>
+                <button onclick="lpReset()" style="background:none;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 14px;font-size:11px;color:#555;cursor:pointer;margin-top:8px;">↺ Reiniciar demo</button>
+              </div>
+
+            </div><!-- phone-screen -->
+          </div><!-- phone-shell -->
+
+          <!-- INFO SIDE -->
+          <div class="demo-info-side">
+            <div class="di-dots" id="lp-dots"></div>
+            <div class="di-card">
+              <div class="di-card-title" id="lp-panel-title">Carrinho pronto</div>
+              <div class="di-card-body" id="lp-panel-body">Cliente no checkout. Clique em "Pagar com PIX via Flowt".</div>
+            </div>
+            <div class="di-card">
+              <div class="di-card-title">Log da API</div>
+              <div class="di-log" id="lp-api-log">
+                <span class="log-pending">● POST /v1/flowt/checkout</span><br>
+                <span class="log-pending">● deep_link gerado</span><br>
+                <span class="log-pending">● clipboard.writeText()</span><br>
+                <span class="log-pending">● Nubank aberto</span>
+              </div>
+            </div>
+            <div class="di-metrics">
+              <div class="di-metric"><div class="di-metric-val">70%</div><div class="di-metric-label">menos tempo</div></div>
+              <div class="di-metric"><div class="di-metric-val">3</div><div class="di-metric-label">passos vs 6</div></div>
+              <div class="di-metric"><div class="di-metric-val">90%</div><div class="di-metric-label">conversão</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CONTATO -->
+<div id="contato">
+<div class="contact-wrap fade-in">
+  <div class="contact-info">
+    <div class="section-tag">Contato</div>
+    <h2 class="contact-title">Pronto para<br>converter mais?</h2>
+    <p class="contact-sub">Se você é um gateway, plataforma de e-commerce ou grande varejista, a Flowt pode ser integrada em dias. Entre em contato e vamos marcar uma demo privada.</p>
+    <div class="contact-items">
+      <div class="contact-item">
+        <div class="contact-item-icon">✉</div>
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-val">contato@flowt.com.br</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">💬</div>
+        <div>
+          <div class="contact-item-label">WhatsApp</div>
+          <div class="contact-item-val">+55 (11) 9 ● ● ● ● - ● ● ● ●</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">🏢</div>
+        <div>
+          <div class="contact-item-label">Sede</div>
+          <div class="contact-item-val">São Paulo, SP · Brasil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="contact-form">
+    <div id="form-content">
+      <div class="form-group">
+        <label class="form-label">Nome completo</label>
+        <input type="text" class="form-input" placeholder="João Silva" id="f-nome">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email corporativo</label>
+        <input type="email" class="form-input" placeholder="joao@empresa.com.br" id="f-email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Empresa / Gateway</label>
+        <input type="text" class="form-input" placeholder="Pagar.me, EBANX, Nuvemshop..." id="f-empresa">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mensagem</label>
+        <textarea class="form-input" placeholder="Conte sobre o volume de transações PIX e como podemos colaborar..." id="f-msg"></textarea>
+      </div>
+      <button class="form-submit" onclick="submitForm()">Solicitar demo privada →</button>
+    </div>
+    <div class="form-success" id="form-success">
+      <div class="form-success-icon">✓</div>
+      <div class="form-success-text">Mensagem enviada!<br>Retornaremos em até 24h.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div class="footer-logo-mark">F</div>
+    <div class="footer-logo-name">Flowt</div>
+  </div>
+  <div class="footer-copy">
+    © 2025 Flowt Tecnologia Ltda. · Todos os direitos reservados.<br>
+    Solução proprietária de orquestração PIX. Uso sujeito a termos de licença.
+  </div>
+  <div class="footer-right">
+    CNPJ em constituição<br>
+    São Paulo, SP · Brasil
+  </div>
+</footer>
+
+<script>
+// ── DEMO LOGIC ──
+const API = 'https://web-production-112eb.up.railway.app';
+const API_KEY = 'flowt_test_key_abc123';
+let lpPixCode = '';
+let lpCurrent = 'cart';
+const LP_STEPS = ['cart','bank','loading','nu-home','nu-pix','nu-cola','nu-pagando','nu-review','nu-success','cs'];
+const LP_PANELS = {
+  'cart':       { t:'Carrinho pronto',      b:'Cliente no checkout. Clique em "Pagar com PIX via Flowt".' },
+  'bank':       { t:'Seleção de banco',     b:'Cliente escolhe o banco. Flowt salva a preferência para próximas compras.' },
+  'loading':    { t:'API em ação',           b:'POST /v1/flowt/checkout — gerando PIX e deep link.' },
+  'nu-home':    { t:'Nubank aberto',         b:'Deep link abriu o app. Código PIX já está no clipboard.' },
+  'nu-pix':     { t:'Área Pix',             b:'Cliente acessa Área Pix. Código já copiado automaticamente.' },
+  'nu-cola':    { t:'Pix Copia e Cola',     b:'App detecta o código copiado e oferece colar.' },
+  'nu-pagando': { t:'Detalhes do pagamento', b:'Nubank mostra os detalhes da cobrança.' },
+  'nu-review':  { t:'Revisão final',         b:'Cliente revisa e confirma. Um clique em "Pagar".' },
+  'nu-success': { t:'Pago!',                b:'Confirmado. Botão retorna ao Marketplace.' },
+  'cs':         { t:'Checkout completo',    b:'De 15–25s para menos de 8s. De 6 passos para 3.' },
+};
+
+function buildLpDots() {
+  const c = document.getElementById('lp-dots');
+  LP_STEPS.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'di-dot'; d.id = 'lpd-'+i; c.appendChild(d);
+  });
+}
+
+function lpGo(name) {
+  const prev = document.getElementById('lp-' + lpCurrent);
+  if (prev) { prev.classList.remove('active'); prev.classList.add('exit'); setTimeout(() => prev && prev.classList.remove('exit'), 300); }
+  const next = document.getElementById('lp-' + name);
+  if (next) next.classList.add('active');
+  lpCurrent = name;
+  const idx = LP_STEPS.indexOf(name);
+  LP_STEPS.forEach((_,i) => document.getElementById('lpd-'+i).classList.toggle('on', i <= idx));
+  if (LP_PANELS[name]) {
+    document.getElementById('lp-panel-title').textContent = LP_PANELS[name].t;
+    document.getElementById('lp-panel-body').textContent  = LP_PANELS[name].b;
+  }
+}
+
+function lpUpdateLog(step) {
+  const lines = ['POST /v1/flowt/checkout','deep_link gerado','clipboard.writeText()','Nubank aberto'];
+  document.getElementById('lp-api-log').innerHTML = lines.map((l,i) => {
+    if (i < step)  return '<span class="ok">✓ ' + l + '</span>';
+    if (i === step) return '<span style="color:#00C47A">● ' + l + '</span>';
+    return '<span class="log-pending">● ' + l + '</span>';
+  }).join('<br>');
+}
+
+function lpSelectBank() {
+  document.getElementById('lp-bank-nu').classList.add('sel');
+  lpGo('loading'); lpUpdateLog(0);
+  setTimeout(lpCallAPI, 400);
+}
+
+async function lpCallAPI() {
+  document.getElementById('lp-loading-text').textContent = 'Gerando seu PIX...';
+  try {
+    const r = await fetch(API + '/v1/flowt/checkout', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY},
+      body: JSON.stringify({valor:'199.90',chave_pix:'33746404860',banco_pagador:'nubank',store_id:'7488628'})
+    });
+    const d = await r.json();
+    lpPixCode = d.pix_copia_e_cola || lpFallback();
+  } catch(e) { lpPixCode = lpFallback(); }
+  lpUpdateLog(1);
+  document.getElementById('lp-loading-text').textContent = 'Copiando PIX...';
+  setTimeout(() => {
+    lpUpdateLog(2);
+    try { navigator.clipboard.writeText(lpPixCode); } catch(e) {}
+    document.getElementById('lp-loading-text').textContent = 'Abrindo Nubank...';
+    setTimeout(() => { lpUpdateLog(3); lpGo('nu-home'); }, 600);
+  }, 700);
+}
+
+function lpPaste() {
+  const el = document.getElementById('lp-paste-display');
+  el.textContent = lpPixCode;
+  el.style.color = 'white';
+  setTimeout(() => lpGo('nu-pagando'), 500);
+}
+
+function lpFallback() {
+  return '00020126580014br.gov.bcb.pix0136flowt-' + Math.random().toString(36).slice(2,8) + '@sandbox.com5204000053039865802BR5910FlowStore6009SP62070503***6304DEMO';
+}
+
+function lpReset() {
+  document.getElementById('lp-bank-nu').classList.remove('sel');
+  const pd = document.getElementById('lp-paste-display');
+  pd.textContent = '\u00a0'; pd.style.color = '';
+  lpUpdateLog(-1);
+  lpGo('cart');
+}
+
+// ── FORM ──
+function submitForm() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  if (!nome || !email) { alert('Preencha nome e email.'); return; }
+  document.getElementById('form-content').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+
+// ── SCROLL FADE ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ── INIT ──
+buildLpDots();
+lpGo('cart');
+</script>
+</body>
+</html>
