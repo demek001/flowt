@@ -35,12 +35,10 @@ body {
   overflow-x: hidden;
 }
 
-/* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
 
-/* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   padding: 0 40px;
@@ -73,7 +71,6 @@ nav {
 .nav-cta:active { transform: scale(0.98); }
 @media (max-width: 640px) { .nav-links { display: none; } nav { padding: 0 20px; } }
 
-/* ── HERO ── */
 .hero {
   min-height: 100vh;
   display: flex; flex-direction: column;
@@ -170,7 +167,6 @@ nav {
 .stat-val span { color: var(--accent); }
 .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-/* ── SECTION BASE ── */
 section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
 .section-tag {
   display: inline-flex; align-items: center; gap: 6px;
@@ -188,7 +184,6 @@ section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
 }
 .section-sub { font-size: 16px; color: var(--muted2); max-width: 520px; line-height: 1.7; }
 
-/* ── PROBLEMA ── */
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -221,7 +216,6 @@ section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
 }
 .step-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-/* ── SOLUÇÃO ── */
 .solution-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -258,7 +252,6 @@ section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
 .sol-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
 .sol-desc { font-size: 13px; color: var(--muted2); line-height: 1.6; }
 
-/* ── BENCHMARK ── */
 .bench-wrap {
   margin-top: 56px;
   background: var(--surface);
@@ -279,7 +272,6 @@ section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
   letter-spacing: -0.02em;
 }
 
-/* ── DEMO SECTION ── */
 #demo { padding: 80px 24px; }
 .demo-section-wrap { max-width: 1100px; margin: 0 auto; }
 .demo-container {
@@ -316,7 +308,6 @@ section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
   min-height: 400px;
 }
 
-/* INLINE DEMO */
 .inline-demo { width: 100%; max-width: 700px; }
 .demo-inner {
   display: flex; gap: 28px; align-items: flex-start;
@@ -346,7 +337,6 @@ section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
 .lp-step.active { opacity: 1; pointer-events: auto; transform: translateX(0); }
 .lp-step.exit { opacity: 0; transform: translateX(-18px); }
 
-/* reuse demo styles */
 .lp-store-header { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 0.5px solid rgba(255,255,255,0.06); }
 .lp-store-logo { width: 22px; height: 22px; border-radius: 5px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #000; }
 .lp-store-name { font-size: 11px; font-weight: 500; color: #fff; }
@@ -374,7 +364,6 @@ section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
 .lp-spinner { width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.08); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* NU screens mini */
 .nu-mini { background: #0d0618; min-height: 520px; }
 .nu-mini-bar { height: 24px; background: #8A05BE; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
 .nu-mini-time { font-size: 10px; font-weight: 600; color: white; }
@@ -385,7 +374,6 @@ section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
 .nu-mini-btn:active { transform: scale(0.98); }
 .nu-mini-amount { font-size: 24px; font-weight: 800; color: white; margin: 4px 0 10px; }
 
-/* INFO SIDE */
 .demo-info-side { flex: 1; min-width: 200px; max-width: 280px; }
 .di-dots { display: flex; gap: 5px; margin-bottom: 14px; flex-wrap: wrap; }
 .di-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: background 0.3s; }
@@ -400,7 +388,6 @@ section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
 .di-metric-val { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 800; color: var(--accent); }
 .di-metric-label { font-size: 9px; color: #555; margin-top: 2px; }
 
-/* ── CONTATO ── */
 #contato { padding: 100px 24px; }
 .contact-wrap {
   max-width: 1100px; margin: 0 auto;
@@ -464,7 +451,6 @@ textarea.form-input { resize: none; min-height: 100px; }
 .contact-item-label { font-size: 11px; color: var(--muted); margin-bottom: 1px; }
 .contact-item-val { font-size: 13px; color: var(--text); font-weight: 500; }
 
-/* ── FOOTER ── */
 footer {
   border-top: 0.5px solid var(--border);
   padding: 32px 40px;
@@ -472,18 +458,15 @@ footer {
   flex-wrap: wrap; gap: 16px;
 }
 .footer-logo { display: flex; align-items: center; gap: 8px; }
-.footer-logo-mark { width: 24px; height: 24px; border-radius: 6px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: 'Syne'; font-weight: 800; font-size: 10px; color: #000; }
-.footer-logo-name { font-family: 'Syne'; font-weight: 700; font-size: 14px; color: var(--text); }
+.footer-logo-mark { width: 24px; height: 24px; border-radius: 6px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 10px; color: #000; }
+.footer-logo-name { font-family: 'Plus Jakarta Sans'; font-weight: 700; font-size: 14px; color: var(--text); }
 .footer-copy { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.6; }
 .footer-right { font-size: 11px; color: #333; text-align: right; line-height: 1.6; }
 @media (max-width: 640px) { footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; } .footer-right { text-align: left; } }
 
-/* ── ANIMATIONS ── */
 .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-/* ── FLOW COMPARATIVO ── */
-.flow-cmp { }
 .flow-cmp-grid {
   display: grid;
   grid-template-columns: 1fr 40px 1fr;
@@ -541,7 +524,6 @@ footer {
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
     <div class="nav-logo-mark">F</div>
@@ -553,10 +535,9 @@ footer {
     <a href="#demo">Demo</a>
     <a href="#contato">Contato</a>
   </div>
-  <a href="#contato" class="nav-cta">Falar com a equipe →</a>
+  <a href="#contato" class="nav-cta">Falar com o fundador →</a>
 </nav>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
@@ -577,9 +558,7 @@ footer {
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       Ver demo ao vivo
     </a>
-    <a href="#contato" class="btn-secondary">
-      Falar com a equipe
-    </a>
+    <a href="#contato" class="btn-secondary">Falar com o fundador</a>
   </div>
   <div class="hero-stats">
     <div class="stat"><div class="stat-val"><span>90%</span></div><div class="stat-label">taxa de conversão PIX com Flowt</div></div>
@@ -591,114 +570,40 @@ footer {
   </div>
 </div>
 
-<!-- PROBLEMA -->
 <section id="problema" class="fade-in">
   <div class="section-tag">Problema crítico</div>
   <h2 class="section-title">15 a 25 segundos de<br>fricção no momento certo.</h2>
   <p class="section-sub">A jornada atual do PIX tem 5 passos manuais que acumulam atrito justamente no momento mais valioso — a finalização da compra.</p>
   <div class="steps-grid">
-    <div class="step-card">
-      <div class="step-num">01</div>
-      <div class="step-icon">📋</div>
-      <div class="step-name">Copiar QR Code</div>
-      <div class="step-time">2–4s</div>
-      <div class="step-desc">Identificar botão, tocar, confirmar e aguardar feedback visual</div>
-    </div>
-    <div class="step-card">
-      <div class="step-num">02</div>
-      <div class="step-icon">📱</div>
-      <div class="step-name">Abrir o app do banco</div>
-      <div class="step-time">3–6s</div>
-      <div class="step-desc">Troca de app, tempo de carregamento, confusão de navegação</div>
-    </div>
-    <div class="step-card">
-      <div class="step-num">03</div>
-      <div class="step-icon">📌</div>
-      <div class="step-name">Colar o código Pix</div>
-      <div class="step-time">4–7s</div>
-      <div class="step-desc">Navegar até Pix, selecionar "Copia e Cola", executar a ação</div>
-    </div>
-    <div class="step-card">
-      <div class="step-num">04</div>
-      <div class="step-icon">✅</div>
-      <div class="step-name">Confirmar pagamento</div>
-      <div class="step-time">3–5s</div>
-      <div class="step-desc">Revisar detalhes, confirmar com biometria ou senha</div>
-    </div>
-    <div class="step-card">
-      <div class="step-num">05</div>
-      <div class="step-icon">↩</div>
-      <div class="step-name">Voltar ao checkout</div>
-      <div class="step-time">2–4s</div>
-      <div class="step-desc">Trocar de app novamente, aguardar tela de confirmação</div>
-    </div>
+    <div class="step-card"><div class="step-num">01</div><div class="step-icon">📋</div><div class="step-name">Copiar QR Code</div><div class="step-time">2–4s</div><div class="step-desc">Identificar botão, tocar, confirmar e aguardar feedback visual</div></div>
+    <div class="step-card"><div class="step-num">02</div><div class="step-icon">📱</div><div class="step-name">Abrir o app do banco</div><div class="step-time">3–6s</div><div class="step-desc">Troca de app, tempo de carregamento, confusão de navegação</div></div>
+    <div class="step-card"><div class="step-num">03</div><div class="step-icon">📌</div><div class="step-name">Colar o código Pix</div><div class="step-time">4–7s</div><div class="step-desc">Navegar até Pix, selecionar "Copia e Cola", executar a ação</div></div>
+    <div class="step-card"><div class="step-num">04</div><div class="step-icon">✅</div><div class="step-name">Confirmar pagamento</div><div class="step-time">3–5s</div><div class="step-desc">Revisar detalhes, confirmar com biometria ou senha</div></div>
+    <div class="step-card"><div class="step-num">05</div><div class="step-icon">↩</div><div class="step-name">Voltar ao checkout</div><div class="step-time">2–4s</div><div class="step-desc">Trocar de app novamente, aguardar tela de confirmação</div></div>
   </div>
   <div class="bench-wrap fade-in">
-    <div class="bench-item">
-      <div class="bench-label">Apple Pay / NuPay</div>
-      <div class="bench-bar-wrap"><div class="bench-bar" style="width:20%;background:#00C47A;"></div></div>
-      <div class="bench-time" style="color:#00C47A;">3–5s</div>
-    </div>
-    <div class="bench-item">
-      <div class="bench-label">Flowt (meta)</div>
-      <div class="bench-bar-wrap"><div class="bench-bar" style="width:35%;background:#00C47A;opacity:0.6;"></div></div>
-      <div class="bench-time" style="color:#00C47A;opacity:0.7;">5–8s</div>
-    </div>
-    <div class="bench-item">
-      <div class="bench-label">PIX atual</div>
-      <div class="bench-bar-wrap"><div class="bench-bar" style="width:100%;background:#ff4444;"></div></div>
-      <div class="bench-time" style="color:#ff4444;">15–25s</div>
-    </div>
+    <div class="bench-item"><div class="bench-label">Apple Pay / NuPay</div><div class="bench-bar-wrap"><div class="bench-bar" style="width:20%;background:#00C47A;"></div></div><div class="bench-time" style="color:#00C47A;">3–5s</div></div>
+    <div class="bench-item"><div class="bench-label">Flowt (meta)</div><div class="bench-bar-wrap"><div class="bench-bar" style="width:35%;background:#00C47A;opacity:0.6;"></div></div><div class="bench-time" style="color:#00C47A;opacity:0.7;">5–8s</div></div>
+    <div class="bench-item"><div class="bench-label">PIX atual</div><div class="bench-bar-wrap"><div class="bench-bar" style="width:100%;background:#ff4444;"></div></div><div class="bench-time" style="color:#ff4444;">15–25s</div></div>
   </div>
 </section>
 
-<!-- SOLUÇÃO -->
 <section id="solucao" class="fade-in">
   <div class="section-tag">A solução</div>
   <h2 class="section-title">PIX orquestrado.<br>3 passos. 5 segundos.</h2>
   <p class="section-sub">A API Flowt automatiza toda a orquestração — deep link inteligente, auto-copy e redirecionamento direto para a tela de PIX do banco escolhido.</p>
   <div class="solution-grid">
-    <div class="sol-card">
-      <div class="sol-icon">⚡</div>
-      <div class="sol-title">Deep Link Inteligente</div>
-      <div class="sol-desc">Abre o app do banco direto na tela de PIX Copia e Cola, sem navegação manual. Suporte a Nubank, Itaú, Bradesco, BB, Inter, C6 e mais.</div>
-    </div>
-    <div class="sol-card">
-      <div class="sol-icon">📋</div>
-      <div class="sol-title">Auto-Copy automático</div>
-      <div class="sol-desc">O código PIX é copiado para o clipboard no momento exato do clique. O banco detecta e oferece colar automaticamente.</div>
-    </div>
-    <div class="sol-card">
-      <div class="sol-icon">🔁</div>
-      <div class="sol-title">Preferência de banco salva</div>
-      <div class="sol-desc">Na segunda compra, o fluxo é ainda mais rápido — o banco preferido do cliente já está selecionado.</div>
-    </div>
-    <div class="sol-card">
-      <div class="sol-icon">🔌</div>
-      <div class="sol-title">Integração simples</div>
-      <div class="sol-desc">API REST com uma única chamada POST. Funciona sobre qualquer PSP existente — sem trocar de gateway.</div>
-    </div>
-    <div class="sol-card">
-      <div class="sol-icon">📊</div>
-      <div class="sol-title">Métricas em tempo real</div>
-      <div class="sol-desc">Dashboard com taxa de conversão, tempo médio de checkout e abandono por etapa.</div>
-    </div>
-    <div class="sol-card">
-      <div class="sol-icon">🛡</div>
-      <div class="sol-title">Sem intermediar pagamentos</div>
-      <div class="sol-desc">A Flowt é camada de UX, não processadora. O dinheiro flui pelo seu PSP atual. Zero compliance extra.</div>
-    </div>
+    <div class="sol-card"><div class="sol-icon">⚡</div><div class="sol-title">Deep Link Inteligente</div><div class="sol-desc">Abre o app do banco direto na tela de PIX Copia e Cola, sem navegação manual. Suporte a Nubank, Itaú, Bradesco, BB, Inter, C6 e mais.</div></div>
+    <div class="sol-card"><div class="sol-icon">📋</div><div class="sol-title">Auto-Copy automático</div><div class="sol-desc">O código PIX é copiado para o clipboard no momento exato do clique. O banco detecta e oferece colar automaticamente.</div></div>
+    <div class="sol-card"><div class="sol-icon">🔁</div><div class="sol-title">Preferência de banco salva</div><div class="sol-desc">Na segunda compra, o fluxo é ainda mais rápido — o banco preferido do cliente já está selecionado.</div></div>
+    <div class="sol-card"><div class="sol-icon">🔌</div><div class="sol-title">Integração simples</div><div class="sol-desc">API REST com uma única chamada POST. Funciona sobre qualquer PSP existente — sem trocar de gateway.</div></div>
+    <div class="sol-card"><div class="sol-icon">📊</div><div class="sol-title">Métricas em tempo real</div><div class="sol-desc">Dashboard com taxa de conversão, tempo médio de checkout e abandono por etapa.</div></div>
+    <div class="sol-card"><div class="sol-icon">🛡</div><div class="sol-title">Sem intermediar pagamentos</div><div class="sol-desc">A Flowt é camada de UX, não processadora. O dinheiro flui pelo seu PSP atual. Zero compliance extra.</div></div>
 
-  <!-- COMPARATIVO DE FLUXO -->
   <div class="flow-cmp fade-in" style="margin-top:56px;">
     <div class="flow-cmp-grid">
-
-      <!-- SEM FLOWT -->
       <div class="flow-col">
-        <div class="flow-col-header">
-          <div class="flow-badge flow-badge-bad">Sem Flowt</div>
-          <div class="flow-col-title">8 passos</div>
-        </div>
+        <div class="flow-col-header"><div class="flow-badge flow-badge-bad">Sem Flowt</div><div class="flow-col-title">8 passos</div></div>
         <div class="flow-steps">
           <div class="flow-step"><div class="flow-num fn-red">1</div><span class="flow-text">Cliente decide pagar com PIX</span></div>
           <div class="flow-line"></div>
@@ -716,21 +621,11 @@ footer {
           <div class="flow-line"></div>
           <div class="flow-step"><div class="flow-num fn-gray">8</div><span class="flow-text flow-muted">Volta ao marketplace</span></div>
         </div>
-        <div class="flow-result flow-result-bad">
-          Tempo médio: <strong>15–25 segundos</strong><br>
-          Conversão: <strong style="color:#ff5555">~38%</strong>
-        </div>
+        <div class="flow-result flow-result-bad">Tempo médio: <strong>15–25 segundos</strong><br>Conversão: <strong style="color:#ff5555">~38%</strong></div>
       </div>
-
-      <!-- DIVISOR -->
       <div class="flow-vs">VS</div>
-
-      <!-- COM FLOWT -->
       <div class="flow-col">
-        <div class="flow-col-header">
-          <div class="flow-badge flow-badge-good">Com Flowt</div>
-          <div class="flow-col-title">5 passos</div>
-        </div>
+        <div class="flow-col-header"><div class="flow-badge flow-badge-good">Com Flowt</div><div class="flow-col-title">5 passos</div></div>
         <div class="flow-steps">
           <div class="flow-step"><div class="flow-num fn-green">1</div><span class="flow-text">Cliente decide pagar com PIX</span></div>
           <div class="flow-line"></div>
@@ -748,15 +643,9 @@ footer {
           <div class="flow-line"></div>
           <div class="flow-step flow-eliminated"><div class="flow-num fn-ghost" style="opacity:0.2">—</div><span class="flow-text flow-muted" style="opacity:0.25">Volta ao marketplace</span></div>
         </div>
-        <div class="flow-result flow-result-good">
-          Tempo médio: <strong>5–8 segundos</strong><br>
-          Conversão: <strong style="color:#00C47A">até 90%</strong>
-        </div>
+        <div class="flow-result flow-result-good">Tempo médio: <strong>5–8 segundos</strong><br>Conversão: <strong style="color:#00C47A">até 90%</strong></div>
       </div>
-
     </div>
-
-    <!-- MÉTRICAS -->
     <div class="flow-metrics">
       <div class="flow-metric"><div class="flow-metric-val">3</div><div class="flow-metric-label">passos eliminados</div></div>
       <div class="flow-metric"><div class="flow-metric-val">~70%</div><div class="flow-metric-label">menos tempo de compra</div></div>
@@ -767,7 +656,6 @@ footer {
   </div>
 </section>
 
-<!-- DEMO -->
 <div id="demo">
 <div class="demo-section-wrap fade-in">
   <div class="section-tag">Demo ao vivo</div>
@@ -784,38 +672,18 @@ footer {
     <div class="demo-iframe-wrap">
       <div class="inline-demo">
         <div class="demo-inner">
-
-          <!-- PHONE -->
           <div class="phone-shell-lp">
             <div class="phone-top-lp"><div class="phone-pill"></div></div>
             <div class="phone-screen-lp">
-
-              <!-- cart -->
               <div class="lp-step active" id="lp-cart">
-                <div class="lp-store-header">
-                  <div class="lp-store-logo">F</div>
-                  <div><div class="lp-store-name">FlowStore</div><div class="lp-store-sec">checkout seguro</div></div>
-                </div>
-                <div class="lp-product">
-                  <div class="lp-product-img">👟</div>
-                  <div>
-                    <div class="lp-product-name">Tênis Runner Pro</div>
-                    <div class="lp-product-detail">Tam. 42 · Preto</div>
-                    <div class="lp-product-price">R$ 199,90</div>
-                  </div>
-                </div>
-                <div class="lp-summary">
-                  <div class="lp-row"><span>Subtotal</span><span>R$ 199,90</span></div>
-                  <div class="lp-row"><span>Frete</span><span>Grátis</span></div>
-                  <div class="lp-row total"><span>Total</span><span>R$ 199,90</span></div>
-                </div>
+                <div class="lp-store-header"><div class="lp-store-logo">F</div><div><div class="lp-store-name">FlowStore</div><div class="lp-store-sec">checkout seguro</div></div></div>
+                <div class="lp-product"><div class="lp-product-img">👟</div><div><div class="lp-product-name">Tênis Runner Pro</div><div class="lp-product-detail">Tam. 42 · Preto</div><div class="lp-product-price">R$ 199,90</div></div></div>
+                <div class="lp-summary"><div class="lp-row"><span>Subtotal</span><span>R$ 199,90</span></div><div class="lp-row"><span>Frete</span><span>Grátis</span></div><div class="lp-row total"><span>Total</span><span>R$ 199,90</span></div></div>
                 <div class="lp-pay-label">Pagamento</div>
                 <div class="lp-badge"><div class="lp-badge-dot"></div>Powered by Flowt</div>
                 <button class="lp-btn lp-btn-green" onclick="lpGo('bank')">⚡ Pagar com PIX via Flowt</button>
                 <button class="lp-btn lp-btn-ghost">Cartão de crédito</button>
               </div>
-
-              <!-- bank -->
               <div class="lp-step" id="lp-bank" style="background:#111;min-height:520px;">
                 <div class="lp-step-title">Escolha seu banco</div>
                 <div class="lp-step-sub">PIX será copiado e o app abrirá automaticamente</div>
@@ -829,68 +697,33 @@ footer {
                 </div>
                 <div style="font-size:9px;color:#333;text-align:center;margin-top:8px;">Demo com Nubank · outros bancos em breve</div>
               </div>
-
-              <!-- loading -->
               <div class="lp-step" id="lp-loading" style="background:#111;min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
                 <div class="lp-spinner"></div>
                 <div style="font-size:11px;color:#555;" id="lp-loading-text">Gerando seu PIX...</div>
               </div>
-
-              <!-- nu home -->
               <div class="lp-step" id="lp-nu-home">
                 <div class="nu-mini" style="min-height:520px;">
                   <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span><span style="font-size:10px;color:white;">🔋72%</span></div>
                   <div style="background:#8A05BE;padding:12px 14px 18px;">
-                    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-                      <div style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:13px;">👤</div>
-                      <div style="display:flex;gap:12px;font-size:14px;color:rgba(255,255,255,0.6);">👁 ❓ ✉</div>
-                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><div style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:13px;">👤</div><div style="display:flex;gap:12px;font-size:14px;color:rgba(255,255,255,0.6);">👁 ❓ ✉</div></div>
                     <div style="font-size:14px;font-weight:700;color:white;margin-bottom:10px;">Olá, Gabriela</div>
-                    <div style="background:white;border-radius:10px;padding:10px 12px;">
-                      <div style="display:flex;justify-content:space-between;font-size:10px;color:#666;"><span>Conta</span><span>›</span></div>
-                      <div style="font-size:18px;font-weight:800;color:#111;margin-top:2px;">R$ 1.356,98</div>
-                    </div>
+                    <div style="background:white;border-radius:10px;padding:10px 12px;"><div style="display:flex;justify-content:space-between;font-size:10px;color:#666;"><span>Conta</span><span>›</span></div><div style="font-size:18px;font-weight:800;color:#111;margin-top:2px;">R$ 1.356,98</div></div>
                   </div>
                   <div style="background:#0d0618;padding:12px 14px;">
                     <div style="display:flex;justify-content:space-around;margin-bottom:12px;">
-                      <div onclick="lpGo('nu-pix')" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;">
-                        <div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">✦</div>
-                        <span style="font-size:9px;color:#a080c0;">Pix</span>
-                      </div>
-                      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
-                        <div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">💳</div>
-                        <span style="font-size:9px;color:#a080c0;">Pagar</span>
-                      </div>
-                      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
-                        <div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">↔</div>
-                        <span style="font-size:9px;color:#a080c0;">Transferir</span>
-                      </div>
-                      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
-                        <div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">⬇</div>
-                        <span style="font-size:9px;color:#a080c0;">Depositar</span>
-                      </div>
+                      <div onclick="lpGo('nu-pix')" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;"><div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">✦</div><span style="font-size:9px;color:#a080c0;">Pix</span></div>
+                      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;"><div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">💳</div><span style="font-size:9px;color:#a080c0;">Pagar</span></div>
+                      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;"><div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">↔</div><span style="font-size:9px;color:#a080c0;">Transferir</span></div>
+                      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;"><div style="width:38px;height:38px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:14px;">⬇</div><span style="font-size:9px;color:#a080c0;">Depositar</span></div>
                     </div>
-                    <div style="background:#1e0d30;border-radius:8px;padding:10px 12px;margin-bottom:12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
-                      <span style="font-size:11px;color:#a080c0;">💳 Meus cartões</span><span style="color:rgba(255,255,255,0.2)">›</span>
-                    </div>
-                    <div style="border-top:0.5px solid rgba(255,255,255,0.04);padding-top:10px;">
-                      <div style="font-size:9px;color:#444;">Cartão de crédito · Fatura atual</div>
-                      <div style="font-size:14px;font-weight:800;color:white;margin:3px 0;">R$ 1.094,80</div>
-                      <div style="font-size:9px;color:#555;">Limite disponível: R$ 730,00</div>
-                    </div>
+                    <div style="border-top:0.5px solid rgba(255,255,255,0.04);padding-top:10px;"><div style="font-size:9px;color:#444;">Cartão de crédito · Fatura atual</div><div style="font-size:14px;font-weight:800;color:white;margin:3px 0;">R$ 1.094,80</div><div style="font-size:9px;color:#555;">Limite disponível: R$ 730,00</div></div>
                   </div>
                 </div>
               </div>
-
-              <!-- nu pix area -->
               <div class="lp-step" id="lp-nu-pix">
                 <div class="nu-mini" style="min-height:520px;">
                   <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span><span style="font-size:10px;color:white;">🔋</span></div>
-                  <div style="background:#0d0618;padding:12px 14px 16px;">
-                    <button class="nu-mini-back" onclick="lpGo('nu-home')">✕</button>
-                    <div class="nu-mini-title">Área Pix</div>
-                    <div class="nu-mini-sub">Envie e receba a qualquer hora, sem pagar nada.</div>
-                  </div>
+                  <div style="background:#0d0618;padding:12px 14px 16px;"><button class="nu-mini-back" onclick="lpGo('nu-home')">✕</button><div class="nu-mini-title">Área Pix</div><div class="nu-mini-sub">Envie e receba a qualquer hora, sem pagar nada.</div></div>
                   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px 14px;background:#0d0618;">
                     <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:44px;height:44px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:16px;">↗</div><span style="font-size:9px;color:#a080c0;text-align:center;">Transferir</span></div>
                     <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:44px;height:44px;border-radius:50%;background:#2a1040;display:flex;align-items:center;justify-content:center;font-size:16px;">📅</div><span style="font-size:9px;color:#a080c0;text-align:center;">Programar</span></div>
@@ -901,27 +734,17 @@ footer {
                   </div>
                 </div>
               </div>
-
-              <!-- nu cola -->
               <div class="lp-step" id="lp-nu-cola">
                 <div class="nu-mini" style="min-height:520px;">
                   <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span></div>
-                  <div style="background:#0d0618;padding:12px 14px 16px;">
-                    <button class="nu-mini-back" onclick="lpGo('nu-pix')">✕</button>
-                    <div class="nu-mini-title" style="font-size:16px;">Insira o código do<br>Pix Copia e Cola</div>
-                  </div>
+                  <div style="background:#0d0618;padding:12px 14px 16px;"><button class="nu-mini-back" onclick="lpGo('nu-pix')">✕</button><div class="nu-mini-title" style="font-size:16px;">Insira o código do<br>Pix Copia e Cola</div></div>
                   <div style="background:#0d0618;padding:12px 14px;">
                     <div style="font-size:10px;color:#a080c0;margin-bottom:6px;">Cole o código aqui</div>
                     <div id="lp-paste-display" style="background:#1a0a2e;border:0.5px solid rgba(255,255,255,0.08);border-radius:6px;padding:10px 12px;font-size:9px;color:#a080c0;min-height:38px;word-break:break-all;line-height:1.4;">&nbsp;</div>
-                    <div style="background:#1a0a2e;border-radius:10px;padding:10px 12px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;border:0.5px solid rgba(138,5,190,0.25);">
-                      <span style="font-size:10px;color:#a080c0;">Um código Pix já foi copiado por você.</span>
-                      <button onclick="lpPaste()" style="font-size:11px;font-weight:700;color:#8A05BE;background:none;border:none;cursor:pointer;padding:0;margin-left:8px;white-space:nowrap;">Colar</button>
-                    </div>
+                    <div style="background:#1a0a2e;border-radius:10px;padding:10px 12px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;border:0.5px solid rgba(138,5,190,0.25);"><span style="font-size:10px;color:#a080c0;">Um código Pix já foi copiado por você.</span><button onclick="lpPaste()" style="font-size:11px;font-weight:700;color:#8A05BE;background:none;border:none;cursor:pointer;padding:0;margin-left:8px;white-space:nowrap;">Colar</button></div>
                   </div>
                 </div>
               </div>
-
-              <!-- nu pagando -->
               <div class="lp-step" id="lp-nu-pagando">
                 <div class="nu-mini" style="min-height:520px;">
                   <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span></div>
@@ -940,60 +763,32 @@ footer {
                   </div>
                 </div>
               </div>
-
-              <!-- nu review -->
               <div class="lp-step" id="lp-nu-review">
                 <div class="nu-mini" style="min-height:520px;">
                   <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span></div>
-                  <div style="background:#0d0618;padding:12px 14px;">
-                    <button class="nu-mini-back" onclick="lpGo('nu-pagando')">‹</button>
-                    <div class="nu-mini-title" style="font-size:15px;">Revise os detalhes<br>do seu pagamento</div>
-                    <div class="nu-mini-sub">para FLOWSTORE LTDA</div>
-                  </div>
+                  <div style="background:#0d0618;padding:12px 14px;"><button class="nu-mini-back" onclick="lpGo('nu-pagando')">‹</button><div class="nu-mini-title" style="font-size:15px;">Revise os detalhes<br>do seu pagamento</div><div class="nu-mini-sub">para FLOWSTORE LTDA</div></div>
                   <div style="background:#0d0618;padding:0 14px;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);">
-                      <div><div style="font-size:10px;color:#a080c0;">Quando</div><div style="font-size:11px;font-weight:500;color:white;margin-top:1px;">Agora</div></div>
-                      <button style="font-size:9px;color:#8A05BE;background:#2a1040;border:none;border-radius:16px;padding:4px 10px;cursor:pointer;font-weight:600;">Alterar</button>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);">
-                      <div><div style="font-size:10px;color:#a080c0;">Forma de pagamento</div><div style="font-size:11px;font-weight:500;color:white;margin-top:1px;">Pix</div></div>
-                      <button style="font-size:9px;color:#8A05BE;background:#2a1040;border:none;border-radius:16px;padding:4px 10px;cursor:pointer;font-weight:600;">Alterar</button>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);">
-                      <div><div style="font-size:10px;color:#a080c0;">Pagando com</div><div style="font-size:11px;font-weight:500;color:white;margin-top:1px;">Saldo da conta</div></div>
-                      <button style="font-size:9px;color:#8A05BE;background:#2a1040;border:none;border-radius:16px;padding:4px 10px;cursor:pointer;font-weight:600;">Alterar</button>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 8px;">
-                      <span style="font-size:11px;color:#a080c0;">Total a pagar</span>
-                      <span style="font-size:16px;font-weight:800;color:white;">R$ 199,90</span>
-                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);"><div><div style="font-size:10px;color:#a080c0;">Quando</div><div style="font-size:11px;font-weight:500;color:white;margin-top:1px;">Agora</div></div><button style="font-size:9px;color:#8A05BE;background:#2a1040;border:none;border-radius:16px;padding:4px 10px;cursor:pointer;font-weight:600;">Alterar</button></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);"><div><div style="font-size:10px;color:#a080c0;">Forma de pagamento</div><div style="font-size:11px;font-weight:500;color:white;margin-top:1px;">Pix</div></div><button style="font-size:9px;color:#8A05BE;background:#2a1040;border:none;border-radius:16px;padding:4px 10px;cursor:pointer;font-weight:600;">Alterar</button></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);"><div><div style="font-size:10px;color:#a080c0;">Pagando com</div><div style="font-size:11px;font-weight:500;color:white;margin-top:1px;">Saldo da conta</div></div><button style="font-size:9px;color:#8A05BE;background:#2a1040;border:none;border-radius:16px;padding:4px 10px;cursor:pointer;font-weight:600;">Alterar</button></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 8px;"><span style="font-size:11px;color:#a080c0;">Total a pagar</span><span style="font-size:16px;font-weight:800;color:white;">R$ 199,90</span></div>
                     <button onclick="lpGo('nu-success')" class="nu-mini-btn">Pagar</button>
                   </div>
                 </div>
               </div>
-
-              <!-- nu success -->
               <div class="lp-step" id="lp-nu-success">
                 <div class="nu-mini" style="min-height:520px;display:flex;flex-direction:column;">
                   <div class="nu-mini-bar"><span class="nu-mini-time">19:10</span></div>
-                  <div style="background:#0d0618;padding:14px 14px;border-bottom:0.5px solid rgba(255,255,255,0.04);">
-                    <div style="visibility:hidden;font-size:14px;">✕</div>
-                  </div>
+                  <div style="background:#0d0618;padding:14px 14px;border-bottom:0.5px solid rgba(255,255,255,0.04);"><div style="visibility:hidden;font-size:14px;">✕</div></div>
                   <div style="background:#0d0618;padding:28px 18px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;flex:1;">
                     <div style="font-size:42px;margin-bottom:10px;">🚀</div>
                     <div style="font-size:18px;font-weight:800;color:white;margin-bottom:4px;">Pagamento<br>realizado!</div>
                     <div style="font-size:10px;color:#a080c0;margin-bottom:20px;line-height:1.5;">Para mais detalhes veja o histórico<br>de transações da sua conta.</div>
-                    <div style="background:#1e0d30;border-radius:10px;padding:14px 16px;width:100%;margin-bottom:18px;">
-                      <div style="font-size:17px;font-weight:800;color:white;margin-bottom:3px;">R$ 199,90</div>
-                      <div style="font-size:10px;color:#a080c0;">para FLOWSTORE LTDA</div>
-                      <div style="font-size:9px;color:rgba(255,255,255,0.2);margin-top:4px;">Agora mesmo · 19:10</div>
-                    </div>
+                    <div style="background:#1e0d30;border-radius:10px;padding:14px 16px;width:100%;margin-bottom:18px;"><div style="font-size:17px;font-weight:800;color:white;margin-bottom:3px;">R$ 199,90</div><div style="font-size:10px;color:#a080c0;">para FLOWSTORE LTDA</div><div style="font-size:9px;color:rgba(255,255,255,0.2);margin-top:4px;">Agora mesmo · 19:10</div></div>
                     <button onclick="lpGo('cs')" class="nu-mini-btn">🛍 Voltar ao Marketplace</button>
                   </div>
                 </div>
               </div>
-
-              <!-- checkout success -->
               <div class="lp-step" id="lp-cs" style="background:#111;min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;gap:6px;">
                 <div style="width:52px;height:52px;border-radius:50%;background:rgba(0,196,122,0.12);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:6px;">✓</div>
                 <div style="font-size:15px;font-weight:600;color:#fff;">Pagamento confirmado!</div>
@@ -1007,33 +802,18 @@ footer {
                 <div style="font-size:10px;color:#444;margin-top:8px;line-height:1.6;">De <strong style="color:#00C47A;">15–25s</strong> para <strong style="color:#00C47A;">menos de 8s</strong>.<br>De 6 passos para <strong style="color:#00C47A;">3 passos</strong>.</div>
                 <button onclick="lpReset()" style="background:none;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 14px;font-size:11px;color:#555;cursor:pointer;margin-top:8px;">↺ Reiniciar demo</button>
               </div>
-
-            </div><!-- phone-screen -->
-          </div><!-- phone-shell -->
-
-          <!-- INFO SIDE -->
+            </div>
+          </div>
           <div class="demo-info-side">
             <div class="di-dots" id="lp-dots"></div>
-            <div class="di-card">
-              <div class="di-card-title" id="lp-panel-title">Carrinho pronto</div>
-              <div class="di-card-body" id="lp-panel-body">Cliente no checkout. Clique em "Pagar com PIX via Flowt".</div>
-            </div>
-            <div class="di-card">
-              <div class="di-card-title">Log da API</div>
-              <div class="di-log" id="lp-api-log">
-                <span class="log-pending">● POST /v1/flowt/checkout</span><br>
-                <span class="log-pending">● deep_link gerado</span><br>
-                <span class="log-pending">● clipboard.writeText()</span><br>
-                <span class="log-pending">● Nubank aberto</span>
-              </div>
-            </div>
+            <div class="di-card"><div class="di-card-title" id="lp-panel-title">Carrinho pronto</div><div class="di-card-body" id="lp-panel-body">Cliente no checkout. Clique em "Pagar com PIX via Flowt".</div></div>
+            <div class="di-card"><div class="di-card-title">Log da API</div><div class="di-log" id="lp-api-log"><span class="log-pending">● POST /v1/flowt/checkout</span><br><span class="log-pending">● deep_link gerado</span><br><span class="log-pending">● clipboard.writeText()</span><br><span class="log-pending">● Nubank aberto</span></div></div>
             <div class="di-metrics">
               <div class="di-metric"><div class="di-metric-val">70%</div><div class="di-metric-label">menos tempo</div></div>
               <div class="di-metric"><div class="di-metric-val">3</div><div class="di-metric-label">passos vs 6</div></div>
               <div class="di-metric"><div class="di-metric-val">90%</div><div class="di-metric-label">conversão</div></div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -1041,7 +821,7 @@ footer {
 </div>
 </div>
 
-<!-- CONTATO -->
+<!-- CONTATO — apenas email -->
 <div id="contato">
 <div class="contact-wrap fade-in">
   <div class="contact-info">
@@ -1053,44 +833,18 @@ footer {
         <div class="contact-item-icon">✉</div>
         <div>
           <div class="contact-item-label">Email</div>
-          <div class="contact-item-val">contato@flowt.com.br</div>
-        </div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-item-icon">💬</div>
-        <div>
-          <div class="contact-item-label">WhatsApp</div>
-          <div class="contact-item-val">+55 (11) 9 ● ● ● ● - ● ● ● ●</div>
-        </div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-item-icon">🏢</div>
-        <div>
-          <div class="contact-item-label">Sede</div>
-          <div class="contact-item-val">São Paulo, SP · Brasil</div>
+          <div class="contact-item-val">yosdemek@gmail.com</div>
         </div>
       </div>
     </div>
   </div>
   <div class="contact-form">
     <div id="form-content">
-      <div class="form-group">
-        <label class="form-label">Nome completo</label>
-        <input type="text" class="form-input" placeholder="João Silva" id="f-nome">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email corporativo</label>
-        <input type="email" class="form-input" placeholder="joao@empresa.com.br" id="f-email">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Empresa / Gateway</label>
-        <input type="text" class="form-input" placeholder="Pagar.me, EBANX, Nuvemshop..." id="f-empresa">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Mensagem</label>
-        <textarea class="form-input" placeholder="Conte sobre o volume de transações PIX e como podemos colaborar..." id="f-msg"></textarea>
-      </div>
-      <button class="form-submit" onclick="submitForm()">Solicitar demo privada →</button>
+      <div class="form-group"><label class="form-label">Nome completo</label><input type="text" class="form-input" placeholder="João Silva" id="f-nome"></div>
+      <div class="form-group"><label class="form-label">Email corporativo</label><input type="email" class="form-input" placeholder="joao@empresa.com.br" id="f-email"></div>
+      <div class="form-group"><label class="form-label">Empresa / Gateway</label><input type="text" class="form-input" placeholder="Pagar.me, EBANX, Nuvemshop..." id="f-empresa"></div>
+      <div class="form-group"><label class="form-label">Mensagem</label><textarea class="form-input" placeholder="Conte sobre o volume de transações PIX e como podemos colaborar..." id="f-msg"></textarea></div>
+      <button class="form-submit" onclick="submitForm()">Falar com o fundador →</button>
     </div>
     <div class="form-success" id="form-success">
       <div class="form-success-icon">✓</div>
@@ -1100,7 +854,6 @@ footer {
 </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-logo">
     <div class="footer-logo-mark">F</div>
@@ -1117,31 +870,27 @@ footer {
 </footer>
 
 <script>
-// ── DEMO LOGIC ──
 const API = 'https://web-production-112eb.up.railway.app';
 const API_KEY = 'flowt_test_key_abc123';
 let lpPixCode = '';
 let lpCurrent = 'cart';
 const LP_STEPS = ['cart','bank','loading','nu-home','nu-pix','nu-cola','nu-pagando','nu-review','nu-success','cs'];
 const LP_PANELS = {
-  'cart':       { t:'Carrinho pronto',      b:'Cliente no checkout. Clique em "Pagar com PIX via Flowt".' },
-  'bank':       { t:'Seleção de banco',     b:'Cliente escolhe o banco. Flowt salva a preferência para próximas compras.' },
-  'loading':    { t:'API em ação',           b:'POST /v1/flowt/checkout — gerando PIX e deep link.' },
-  'nu-home':    { t:'Nubank aberto',         b:'Deep link abriu o app. Código PIX já está no clipboard.' },
-  'nu-pix':     { t:'Área Pix',             b:'Cliente acessa Área Pix. Código já copiado automaticamente.' },
-  'nu-cola':    { t:'Pix Copia e Cola',     b:'App detecta o código copiado e oferece colar.' },
+  'cart':       { t:'Carrinho pronto',       b:'Cliente no checkout. Clique em "Pagar com PIX via Flowt".' },
+  'bank':       { t:'Seleção de banco',      b:'Cliente escolhe o banco. Flowt salva a preferência para próximas compras.' },
+  'loading':    { t:'API em ação',            b:'POST /v1/flowt/checkout — gerando PIX e deep link.' },
+  'nu-home':    { t:'Nubank aberto',          b:'Deep link abriu o app. Código PIX já está no clipboard.' },
+  'nu-pix':     { t:'Área Pix',              b:'Cliente acessa Área Pix. Código já copiado automaticamente.' },
+  'nu-cola':    { t:'Pix Copia e Cola',      b:'App detecta o código copiado e oferece colar.' },
   'nu-pagando': { t:'Detalhes do pagamento', b:'Nubank mostra os detalhes da cobrança.' },
-  'nu-review':  { t:'Revisão final',         b:'Cliente revisa e confirma. Um clique em "Pagar".' },
-  'nu-success': { t:'Pago!',                b:'Confirmado. Botão retorna ao Marketplace.' },
-  'cs':         { t:'Checkout completo',    b:'De 15–25s para menos de 8s. De 6 passos para 3.' },
+  'nu-review':  { t:'Revisão final',          b:'Cliente revisa e confirma. Um clique em "Pagar".' },
+  'nu-success': { t:'Pago!',                 b:'Confirmado. Botão retorna ao Marketplace.' },
+  'cs':         { t:'Checkout completo',     b:'De 15–25s para menos de 8s. De 6 passos para 3.' },
 };
 
 function buildLpDots() {
   const c = document.getElementById('lp-dots');
-  LP_STEPS.forEach((_,i) => {
-    const d = document.createElement('div');
-    d.className = 'di-dot'; d.id = 'lpd-'+i; c.appendChild(d);
-  });
+  LP_STEPS.forEach((_,i) => { const d = document.createElement('div'); d.className='di-dot'; d.id='lpd-'+i; c.appendChild(d); });
 }
 
 function lpGo(name) {
@@ -1152,10 +901,7 @@ function lpGo(name) {
   lpCurrent = name;
   const idx = LP_STEPS.indexOf(name);
   LP_STEPS.forEach((_,i) => document.getElementById('lpd-'+i).classList.toggle('on', i <= idx));
-  if (LP_PANELS[name]) {
-    document.getElementById('lp-panel-title').textContent = LP_PANELS[name].t;
-    document.getElementById('lp-panel-body').textContent  = LP_PANELS[name].b;
-  }
+  if (LP_PANELS[name]) { document.getElementById('lp-panel-title').textContent = LP_PANELS[name].t; document.getElementById('lp-panel-body').textContent = LP_PANELS[name].b; }
 }
 
 function lpUpdateLog(step) {
@@ -1176,11 +922,7 @@ function lpSelectBank() {
 async function lpCallAPI() {
   document.getElementById('lp-loading-text').textContent = 'Gerando seu PIX...';
   try {
-    const r = await fetch(API + '/v1/flowt/checkout', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY},
-      body: JSON.stringify({valor:'199.90',chave_pix:'33746404860',banco_pagador:'nubank',store_id:'7488628'})
-    });
+    const r = await fetch(API + '/v1/flowt/checkout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY}, body: JSON.stringify({valor:'199.90',chave_pix:'33746404860',banco_pagador:'nubank',store_id:'7488628'}) });
     const d = await r.json();
     lpPixCode = d.pix_copia_e_cola || lpFallback();
   } catch(e) { lpPixCode = lpFallback(); }
@@ -1196,8 +938,7 @@ async function lpCallAPI() {
 
 function lpPaste() {
   const el = document.getElementById('lp-paste-display');
-  el.textContent = lpPixCode;
-  el.style.color = 'white';
+  el.textContent = lpPixCode; el.style.color = 'white';
   setTimeout(() => lpGo('nu-pagando'), 500);
 }
 
@@ -1207,13 +948,10 @@ function lpFallback() {
 
 function lpReset() {
   document.getElementById('lp-bank-nu').classList.remove('sel');
-  const pd = document.getElementById('lp-paste-display');
-  pd.textContent = '\u00a0'; pd.style.color = '';
-  lpUpdateLog(-1);
-  lpGo('cart');
+  const pd = document.getElementById('lp-paste-display'); pd.textContent='\u00a0'; pd.style.color='';
+  lpUpdateLog(-1); lpGo('cart');
 }
 
-// ── FORM ──
 function submitForm() {
   const nome = document.getElementById('f-nome').value.trim();
   const email = document.getElementById('f-email').value.trim();
@@ -1222,13 +960,9 @@ function submitForm() {
   document.getElementById('form-success').style.display = 'block';
 }
 
-// ── SCROLL FADE ──
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
+const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-// ── INIT ──
 buildLpDots();
 lpGo('cart');
 </script>
